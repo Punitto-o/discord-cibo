@@ -1,7 +1,7 @@
 # Work with Python 3.6
-import discord, requests, bs4
+import discord, requests, bs4, re
 
-TOKEN = 'NTYxNTc3NzEwODEyNTI4NjQw.XJ-Tvg.idgxKToBfmeNF9lzideh81IKuFc'
+TOKEN = '' #insert bot token here
 
 client = discord.Client()
 
@@ -28,7 +28,15 @@ async def on_message(message):
             soup = bs4.BeautifulSoup(twpage.text, 'html.parser')
             alltweets = soup.findAll('p', {'class': 'js-tweet-text'})
             for i in range(amount):
-                await message.channel.send(str(alltweets[i].get_text()))
+                link = re.search('https://twitter.com/\S+', str(alltweets[i].get_text())) ## Checking if it the tweet is a reply
+                if link is None: ## if it is not
+                    await message.channel.send("Tweet " + str(i+1) + "\):\n" + str(alltweets[i].get_text()))
+                else:
+                    msgs = [] ##If it is, separate the tweet in two parts, text and link
+                    linkpart = re.search('https://twitter.com/\S+', str(alltweets[i].get_text())).group()
+                    textpart = re.sub(linkpart, "", alltweets[i].get_text())
+                    await message.channel.send("Tweet " + str(i+1) + "\):\n" + textpart)
+                    await message.channel.send(linkpart)
         except:
             await message.channel.send("Something went wrong.\nExample input: !tweets elonmusk 4")
 
