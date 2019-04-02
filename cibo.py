@@ -1,7 +1,7 @@
 # Work with Python 3.6
 import discord, requests, bs4, re
 
-TOKEN = '' #insert bot token here
+TOKEN = 'NTYxNTc3NzEwODEyNTI4NjQw.XKAi5Q.F5QOSCa08bmWvdwjNi64M2lubAQ' #insert bot token here
 
 client = discord.Client()
 
